@@ -151,14 +151,6 @@ void ParseFunctionGenerator::GenerateAliasParseTableType(io::Printer* p) {
       )cc");
 }
 
-void ParseFunctionGenerator::GenerateDataDecls(io::Printer* p) {
-  auto v = p->WithVars(variables_);
-  // TODO: Remove this once we remove TcParser::GetTable.
-  p->Emit(R"cc(
-    friend class $pbi$::TcParser;
-  )cc");
-}
-
 static std::string TcParseFunctionName(internal::TcParseFunction func) {
 #define PROTOBUF_TC_PARSE_FUNCTION_X(value) #value,
   static constexpr absl::string_view kNames[] = {
@@ -260,7 +252,7 @@ void ParseFunctionGenerator::GenerateParseTableHelperDefinition(
                                                  options_)}},
                 R"cc(
 #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-                  ::_pbi::TcParser::GetTable<$hot_type$>(),  // to_prefetch
+                  ::_pbi::MessageTraits<$hot_type$>::tc_table(),  // to_prefetch
 #endif  // PROTOBUF_PREFETCH_PARSE_TABLE)cc");
           }}},
         // clang-format off

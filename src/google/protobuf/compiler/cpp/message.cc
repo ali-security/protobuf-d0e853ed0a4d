@@ -1394,9 +1394,7 @@ void MessageGenerator::GenerateMapEntryClassDefinition(io::Printer* p) {
         }},
        {"decl_annotate", [&] { GenerateAnnotationDecl(p); }},
        {"alias_parse_table_type",
-        [&] { parse_function_generator_->GenerateAliasParseTableType(p); }},
-       {"parse_decls",
-        [&] { parse_function_generator_->GenerateDataDecls(p); }}},
+        [&] { parse_function_generator_->GenerateAliasParseTableType(p); }}},
       R"cc(
         class $unused $$Msg$ final
             : public $pbi$::MapEntry<$key_cpp$, $val_cpp$,
@@ -1431,7 +1429,6 @@ void MessageGenerator::GenerateMapEntryClassDefinition(io::Printer* p) {
           $alias_parse_table_type$;
           static constexpr ParseTableT_ InternalGenerateParseTable_(
               const $pbi$::ClassData* $nonnull$ class_data);
-          $parse_decls$;
           $decl_annotate$;
 
           const $pbi$::ClassData* $nonnull$ GetClassData() const PROTOBUF_FINAL;
@@ -2080,7 +2077,6 @@ void MessageGenerator::GenerateClassDefinition(io::Printer* p) {
         }},
        {"alias_parse_table_type",
         [&] { parse_function_generator_->GenerateAliasParseTableType(p); }},
-       {"decl_data", [&] { parse_function_generator_->GenerateDataDecls(p); }},
        {"post_loop_handler",
         [&] {
           if (!NeedsPostLoopHandler(descriptor_, options_)) return;
@@ -2250,7 +2246,6 @@ void MessageGenerator::GenerateClassDefinition(io::Printer* p) {
           $alias_parse_table_type$;
           static constexpr ParseTableT_ InternalGenerateParseTable_(
               const $pbi$::ClassData* $nonnull$ class_data);
-          $decl_data$;
           $post_loop_handler$;
 
           friend class $pb$::MessageLite;
